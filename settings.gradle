@@ -1,0 +1,16 @@
+rootProject.name = 'shavuot'
+
+
+include 'shavuot-toolset'
+include 'shavuot-workflow'
+include 'shavuot-auth'
+include 'shavuot-solution'
+include 'shavuot-thrift'
+include 'shavuot-domain'
+include 'shavuot-dao'
+include 'shavuot-dto'
+include 'shavuot-security'
+include 'shavuot-kafka'
+include 'shavuot-follow'
+include 'shavuot-workflow-client'
+

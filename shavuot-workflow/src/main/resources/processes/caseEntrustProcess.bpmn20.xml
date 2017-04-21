@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="caseEntrustProcess" name="案件委托流程" isExecutable="true">
+    <startEvent id="start" name="开始"></startEvent>
+    <userTask id="receivingCase" name="接收案件" activiti:candidateGroups="1,10" activiti:dueDate="${utilService.convertToDate(receivingCaseDueDate)}">
+      <extensionElements>
+        <activiti:taskListener event="assignment" expression="${execution.setVariable('manager',task.getAssignee())}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="confirmLawyer" name="确认律师" activiti:assignee="${manager}"></userTask>
+    <sequenceFlow id="sid-1C45C353-4F37-4471-9193-7358ABD1011E" sourceRef="receivingCase" targetRef="confirmLawyer"></sequenceFlow>
+    <userTask id="beforeCourt" name="庭前" activiti:assignee="${manager}"></userTask>
+    <sequenceFlow id="sid-9B69A9A4-772E-4CB3-B895-CFF84B9E0BDA" sourceRef="confirmLawyer" targetRef="beforeCourt"></sequenceFlow>
+    <userTask id="afterCourt" name="庭后" activiti:assignee="${manager}"></userTask>
+    <sequenceFlow id="sid-D8CF4D39-721D-4D3D-AF9C-22DBEC6967A4" sourceRef="beforeCourt" targetRef="afterCourt"></sequenceFlow>
+    <userTask id="sentence" name="判决" activiti:assignee="${manager}"></userTask>
+    <sequenceFlow id="sid-301F3E4B-ACAB-4F20-8831-4C5998DF4A0F" sourceRef="afterCourt" targetRef="sentence"></sequenceFlow>
+    <userTask id="endCase" name="结案" activiti:assignee="${manager}"></userTask>
+    <sequenceFlow id="sid-8F0F3604-FD15-413C-BD58-7785DC2C64F7" sourceRef="sentence" targetRef="endCase"></sequenceFlow>
+    <endEvent id="end" name="结束"></endEvent>
+    <sequenceFlow id="sid-4EE96D29-4ECE-45CA-9242-B4855139A29D" sourceRef="endCase" targetRef="end"></sequenceFlow>
+    <sequenceFlow id="sid-AC08303F-EA10-4C1E-ACFD-6A4B54939C39" sourceRef="start" targetRef="receivingCase"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_caseEntrustProcess">
+    <bpmndi:BPMNPlane bpmnElement="caseEntrustProcess" id="BPMNPlane_caseEntrustProcess">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="60.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="receivingCase" id="BPMNShape_receivingCase">
+        <omgdc:Bounds height="80.0" width="100.0" x="150.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmLawyer" id="BPMNShape_confirmLawyer">
+        <omgdc:Bounds height="80.0" width="100.0" x="295.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="beforeCourt" id="BPMNShape_beforeCourt">
+        <omgdc:Bounds height="80.0" width="100.0" x="440.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="afterCourt" id="BPMNShape_afterCourt">
+        <omgdc:Bounds height="80.0" width="100.0" x="585.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sentence" id="BPMNShape_sentence">
+        <omgdc:Bounds height="80.0" width="100.0" x="730.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endCase" id="BPMNShape_endCase">
+        <omgdc:Bounds height="80.0" width="100.0" x="875.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="1020.0" y="71.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-9B69A9A4-772E-4CB3-B895-CFF84B9E0BDA" id="BPMNEdge_sid-9B69A9A4-772E-4CB3-B895-CFF84B9E0BDA">
+        <omgdi:waypoint x="395.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8F0F3604-FD15-413C-BD58-7785DC2C64F7" id="BPMNEdge_sid-8F0F3604-FD15-413C-BD58-7785DC2C64F7">
+        <omgdi:waypoint x="830.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="875.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-1C45C353-4F37-4471-9193-7358ABD1011E" id="BPMNEdge_sid-1C45C353-4F37-4471-9193-7358ABD1011E">
+        <omgdi:waypoint x="250.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="295.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-AC08303F-EA10-4C1E-ACFD-6A4B54939C39" id="BPMNEdge_sid-AC08303F-EA10-4C1E-ACFD-6A4B54939C39">
+        <omgdi:waypoint x="90.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D8CF4D39-721D-4D3D-AF9C-22DBEC6967A4" id="BPMNEdge_sid-D8CF4D39-721D-4D3D-AF9C-22DBEC6967A4">
+        <omgdi:waypoint x="540.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-4EE96D29-4ECE-45CA-9242-B4855139A29D" id="BPMNEdge_sid-4EE96D29-4ECE-45CA-9242-B4855139A29D">
+        <omgdi:waypoint x="975.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-301F3E4B-ACAB-4F20-8831-4C5998DF4A0F" id="BPMNEdge_sid-301F3E4B-ACAB-4F20-8831-4C5998DF4A0F">
+        <omgdi:waypoint x="685.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

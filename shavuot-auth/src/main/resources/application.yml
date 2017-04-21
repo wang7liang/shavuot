@@ -1,0 +1,33 @@
+server:
+    port: 8085
+    context-path:
+logging:
+    level:
+        com.ws.kislev: DEBUG
+
+spring:
+    jackson.serialization.INDENT_OUTPUT: true
+    profiles.active: local
+
+---
+spring:
+    profiles: local
+
+    datasource:
+        name: kislev
+        url: jdbc:mysql://192.168.25.71:3306/kislev-dev?characterEncoding=UTF-8
+        username: kislev_admin
+        password: V4TVJvcjDGNiT12ZQr5pB3cxe7UIj/6IPKjDH9BLmLkmVPbcLWfnugHTxXWC4FZqpYWk9JgTj+Ek5XiN6DLziQ==
+itslawyer:
+    IPAdress: http://192.168.25.17:8888
+    userLoginUrl: /platform/users/user/login
+    checkPhoneUrl: http://192.168.25.17:5566/wportal/wpassportUsers/wpassportUser/phoneNumberExists?phoneNumber=
+itslaw:
+    token:
+        header: X-Auth-Token
+        secret: itslaw@wusongtech.com
+        expiration: 31536000
+    route:
+        authentication: auth
+        authentication.refresh: refresh
+        protected: protected

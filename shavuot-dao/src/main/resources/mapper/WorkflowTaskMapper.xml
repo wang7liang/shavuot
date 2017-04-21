@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ws.shavuot.dao.mysql.WorkflowTaskMapper">
+
+    <resultMap id="BaseResultMap" type="com.ws.shavuot.domain.mysql.WorkflowTask">
+            <id column="id" property="id" jdbcType="VARCHAR"/>
+            <result column="execution_id" property="executionId" jdbcType="VARCHAR"/>
+            <result column="process_instance_id" property="processInstanceId" jdbcType="VARCHAR"/>
+            <result column="process_definition_id" property="processDefinitionId" jdbcType="VARCHAR"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="description" property="description" jdbcType="VARCHAR"/>
+            <result column="task_definition_key" property="taskDefinitionKey" jdbcType="VARCHAR"/>
+            <result column="owner" property="owner" jdbcType="VARCHAR"/>
+            <result column="assignee" property="assignee" jdbcType="VARCHAR"/>
+            <result column="priority" property="priority" jdbcType="INTEGER"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="due_date" property="dueDate" jdbcType="TIMESTAMP"/>
+            <result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+            <result column="category" property="category" jdbcType="VARCHAR"/>
+            <result column="parent_task_id" property="parentTaskId" jdbcType="VARCHAR"/>
+            <result column="tenant_id" property="tenantId" jdbcType="VARCHAR"/>
+            <result column="form_key" property="formKey" jdbcType="VARCHAR"/>
+            <result column="business_key" property="businessKey" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,process_instance_id,execution_id,name,description,task_definition_key,owner,assignee,priority,create_time,due_date,end_date,category,parent_task_id,tenant_id,form_key,business_key
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.ws.shavuot.domain.mysql.WorkflowTask" >
+        insert into st_workflow_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+            id,
+            </if>
+            <if test="executionId != null">
+            execution_id,
+            </if>
+            <if test="processInstanceId != null">
+            process_instance_id,
+            </if>
+            <if test="processDefinitionId != null">
+            process_definition_id,
+            </if>
+            <if test="name != null">
+            name,
+            </if>
+            <if test="description != null">
+            description,
+            </if>
+            <if test="taskDefinitionKey != null">
+            task_definition_key,
+            </if>
+            <if test="owner != null">
+            owner,
+            </if>
+            <if test="assignee != null">
+            assignee,
+            </if>
+            <if test="priority != null">
+            priority,
+            </if>
+            <if test="createTime != null">
+            create_time,
+            </if>
+            <if test="dueDate != null">
+            due_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="category != null">
+            category,
+            </if>
+            <if test="parentTaskId != null">
+            parent_task_id,
+            </if>
+            <if test="tenantId != null">
+            tenant_id,
+            </if>
+            <if test="formKey != null">
+            form_key,
+            </if>
+            <if test="businessKey != null">
+            business_key
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+            #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="executionId != null">
+            #{executionId,jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceId != null">
+            #{processInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="processDefinitionId != null">
+            #{processDefinitionId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+            #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+            #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="taskDefinitionKey != null">
+            #{taskDefinitionKey,jdbcType=VARCHAR},
+            </if>
+            <if test="owner != null">
+            #{owner,jdbcType=VARCHAR},
+            </if>
+            <if test="assignee != null">
+            #{assignee,jdbcType=VARCHAR},
+            </if>
+            <if test="priority != null">
+            #{priority,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dueDate != null">
+            #{dueDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="category != null">
+            #{category,jdbcType=VARCHAR},
+            </if>
+            <if test="parentTaskId != null">
+            #{parentTaskId,jdbcType=VARCHAR},
+            </if>
+            <if test="tenantId != null">
+            #{tenantId,jdbcType=VARCHAR},
+            </if>
+            <if test="formKey != null">
+            #{formKey,jdbcType=VARCHAR},
+            </if>
+            <if test="businessKey != null">
+            #{businessKey,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from st_workflow_task
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ws.shavuot.domain.mysql.WorkflowTask">
+        update st_workflow_task set
+        <trim suffixOverrides=",">
+                <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+                </if>
+                <if test="executionId != null">
+                    execution_id = #{executionId,jdbcType=VARCHAR},
+                </if>
+                <if test="processInstanceId != null">
+                    process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+                </if>
+                <if test="processDefinitionId != null">
+                    process_definition_id = #{processDefinitionId,jdbcType=VARCHAR},
+                </if>
+
+                <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+                </if>
+                <if test="taskDefinitionKey != null">
+                task_definition_key = #{taskDefinitionKey,jdbcType=VARCHAR},
+                </if>
+                <if test="owner != null">
+                owner = #{owner,jdbcType=VARCHAR},
+                </if>
+                <if test="assignee != null">
+                assignee = #{assignee,jdbcType=VARCHAR},
+                </if>
+                <if test="priority != null">
+                priority = #{priority,jdbcType=INTEGER},
+                </if>
+                <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="dueDate != null">
+                due_date = #{dueDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="endDate != null">
+                    end_date = #{endDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="category != null">
+                category = #{category,jdbcType=VARCHAR},
+                </if>
+                <if test="parentTaskId != null">
+                parent_task_id = #{parentTaskId,jdbcType=VARCHAR},
+                </if>
+                <if test="tenantId != null">
+                tenant_id = #{tenantId,jdbcType=VARCHAR},
+                </if>
+                <if test="formKey != null">
+                form_key = #{formKey,jdbcType=VARCHAR},
+                </if>
+                <if test="businessKey != null">
+                business_key = #{businessKey,jdbcType=BIGINT}
+                </if>
+        </trim>
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into st_workflow_task
+        ( id, execution_id, process_instance_id, process_definition_id, name, description, task_definition_key, owner, assignee, priority, create_time, due_date, end_date, category, parent_task_id, tenant_id, form_key, business_key)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.id}, #{item.executionId}, #{item.processInstanceId}, #{item.processDefinitionId}, #{item.name}, #{item.description}, #{item.taskDefinitionKey}, #{item.owner}, #{item.assignee}, #{item.priority}, #{item.createTime}, #{item.dueDate}, #{item.endDate}, #{item.category}, #{item.parentTaskId}, #{item.tenantId}, #{item.formKey}, #{item.businessKey})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.ws.shavuot.domain.mysql.WorkflowTask">
+        update st_workflow_task set
+        <trim suffixOverrides=",">
+                id = #{id,jdbcType=VARCHAR},
+                execution_id = #{executionId,jdbcType=VARCHAR},
+                process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+                process_definition_id = #{processDefinitionId,jdbcType=VARCHAR},
+                name = #{name,jdbcType=VARCHAR},
+                description = #{description,jdbcType=VARCHAR},
+                task_definition_key = #{taskDefinitionKey,jdbcType=VARCHAR},
+                owner = #{owner,jdbcType=VARCHAR},
+                assignee = #{assignee,jdbcType=VARCHAR},
+                priority = #{priority,jdbcType=INTEGER},
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+                due_date = #{dueDate,jdbcType=TIMESTAMP},
+                end_date = #{endDate,jdbcType=TIMESTAMP},
+                category = #{category,jdbcType=VARCHAR},
+                parent_task_id = #{parentTaskId,jdbcType=VARCHAR},
+                tenant_id = #{tenantId,jdbcType=VARCHAR},
+                form_key = #{formKey,jdbcType=VARCHAR},
+                business_key = #{businessKey,jdbcType=BIGINT}
+        </trim>
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from st_workflow_task
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <sql id="listWhereOptions">
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="executionId != null">
+                and execution_id = #{executionId,jdbcType=VARCHAR}
+            </if>
+            <if test="processInstanceId != null">
+                and process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="processInstanceId != null">
+                and process_definition_id = #{processDefinitionId,jdbcType=VARCHAR}
+            </if>
+
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="description != null">
+                and description = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="taskDefinitionKey != null">
+                and task_definition_key = #{taskDefinitionKey,jdbcType=VARCHAR}
+            </if>
+            <if test="owner != null">
+                and owner = #{owner,jdbcType=VARCHAR}
+            </if>
+            <if test="assignee != null">
+                and assignee = #{assignee,jdbcType=VARCHAR}
+            </if>
+            <if test="priority != null">
+                and priority = #{priority,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="dueDate != null">
+                and due_date = #{dueDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null">
+                and end_date = #{endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="category != null">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
+            <if test="parentTaskId != null">
+                and parent_task_id = #{parentTaskId,jdbcType=VARCHAR}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId,jdbcType=VARCHAR}
+            </if>
+            <if test="formKey != null">
+                and form_key = #{formKey,jdbcType=VARCHAR}
+            </if>
+            <if test="businessKey != null">
+                and business_key = #{businessKey,jdbcType=BIGINT}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectBySelective" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from st_workflow_task
+        <include refid="listWhereOptions"/>
+    </select>
+
+    <select id="selectBySelectiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from st_workflow_task
+        <include refid="listWhereOptions"/>
+    </select>
+
+
+
+    <select id="selectCompleteTaskByBusinessKey" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"/>
+        from
+          st_workflow_task
+        where
+	      business_key = #{businessKey,jdbcType=BIGINT} and
+	      !ISNULL(end_date)
+        order by end_date desc
+
+    </select>
+
+    <select id="selectNotCompleteTaskByBusinessKey" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"/>
+        from
+          st_workflow_task
+        where
+	      business_key = #{businessKey,jdbcType=BIGINT} and
+	      ISNULL(end_date)
+        order by create_time desc
+    </select>
+
+</mapper>

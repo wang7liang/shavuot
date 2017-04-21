@@ -1,0 +1,104 @@
+group 'com.wusong'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven {
+        url 'http://nexus.tiantong.com/nexus/content/groups/public'
+        maven { url "https://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+configurations {
+    providedCompile
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile(
+
+            //邮箱
+            "javax.validation:validation-api:1.1.0.Final",
+
+            'org.springframework:spring-web:4.2.5.RELEASE',
+            'org.apache.commons:commons-lang3:3.4',
+
+            'com.alibaba:fastjson:1.2.8',
+
+            'org.slf4j:slf4j-api:1.7.9',
+            'log4j:log4j:1.2.17',
+
+            "mysql:mysql-connector-java:5.1.38",
+            'com.google.code.gson:gson:2.3.1',
+
+            'com.fasterxml.jackson.core:jackson-core:2.7.3',
+            'com.fasterxml.jackson.core:jackson-databind:2.7.3',
+            'com.fasterxml.jackson.core:jackson-annotations:2.7.3',
+
+            'org.apache.httpcomponents:httpclient:4.5.2',
+            'org.apache.httpcomponents:httpmime:4.5.2',
+
+            "dom4j:dom4j:1.6.1",
+            "xml-apis:xml-apis:1.4.01",
+
+            'commons-beanutils:commons-beanutils:1.9.2',
+            'commons-logging:commons-logging:1.2',
+            'commons-fileupload:commons-fileupload:1.2.2',
+            'commons-io:commons-io:2.4',
+
+            "org.aspectj:aspectjweaver:1.8.8",
+            //poi
+            "org.apache.poi:poi:3.14",
+            "org.apache.poi:poi-ooxml:3.14",
+            "org.apache.poi:poi-scratchpad:3.15",
+
+    )
+    providedCompile ('javax.servlet:servlet-api:2.5')
+    testCompile(
+            "junit:junit:4.12"
+    )
+}
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile
+
+//依赖编译，然后打包JAR
+task taskJar(type:Jar, dependsOn: compileJava) {
+    from 'build/classes'
+    destinationDir = file('build/libs')
+}
+
+//清除上次的编译过的文件
+task clearPj(type:Delete){
+    delete 'build','target'
+}
+
+
+//把JAR复制到目标目录
+task release(type: Copy,dependsOn: [clearPj,taskJar]) {
+    from('build/libs') {
+        include '*.jar'
+    }
+    into ('target')
+}
+
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+[compileJava, javadoc, compileTestJava]*.options*.encoding = "UTF-8"

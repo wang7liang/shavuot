@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ws.shavuot.dao.mysql.CaseEntrustMapper">
+
+    <resultMap id="BaseResultMap" type="com.ws.shavuot.domain.mysql.CaseEntrust">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="test01" property="test01" jdbcType="VARCHAR"/>
+        <result column="process_instance_id" property="processInstanceId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,test01,process_instance_id
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.ws.shavuot.domain.mysql.CaseEntrust" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into st_case_entrust
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="test01 != null">
+                test01,
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="test01 != null">
+                #{test01,jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceId != null">
+                #{processInstanceId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from st_case_entrust
+        where
+        id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ws.shavuot.domain.mysql.CaseEntrust">
+        update st_case_entrust set
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="test01 != null">
+                test01 = #{test01,jdbcType=VARCHAR},
+            </if>
+            <if test="processInstanceId != null">
+                process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        where
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into st_case_entrust
+        ( id, test01, process_instance_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.id}, #{item.test01}, #{item.processInstanceId})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.ws.shavuot.domain.mysql.CaseEntrust">
+        update st_case_entrust set
+        <trim suffixOverrides=",">
+            id = #{id,jdbcType=BIGINT},
+            test01 = #{test01,jdbcType=VARCHAR},
+            process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+        </trim>
+        where
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from st_case_entrust
+        where
+        id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <sql id="listWhereOptions">
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="test01 != null">
+                and test01 = #{test01,jdbcType=VARCHAR}
+            </if>
+            <if test="processInstanceId != null">
+                and process_instance_id = #{processInstanceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectBySelective" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from st_case_entrust
+        <include refid="listWhereOptions"/>
+    </select>
+
+    <select id="selectBySelectiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from st_case_entrust
+        <include refid="listWhereOptions"/>
+    </select>
+
+
+    <!-- 任务列表 -->
+    <resultMap id="CaseEntrustTaskResultMap" type="com.ws.shavuot.dto.cases.CaseEntrustTaskDto">
+        <result column="case_entrust_id" property="caseEntrustId" jdbcType="BIGINT"/>
+        <result column="test01" property="test01" jdbcType="VARCHAR"/>
+
+        <result column="task_id" property="taskId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="assignee" property="assignee" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="due_date" property="dueDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="listCandidateTaskByUserId" parameterType="java.util.Map" resultMap="CaseEntrustTaskResultMap">
+        select
+            t5.id as case_entrust_id,
+            t5.test01,
+            t4.id as task_id,
+            t4.name,
+            t4.assignee,
+            t4.create_time,
+            t4.due_date
+        from
+            (
+                select * from
+                    (
+                    select  wi.task_id from
+                        (
+                        select role_id from st_user_role_relation
+                        where user_id = #{userId,jdbcType=VARCHAR}
+                        ) urr
+                    left join st_workflow_identitylink wi on urr.role_id = wi.group_id
+                    WHERE
+                        wi.type = 'candidate'
+                    ) t1
+                UNION
+                select * from
+                    (
+                    select task_id from st_workflow_identitylink
+                    WHERE
+                        type = 'candidate' and
+                        user_id = #{userId,jdbcType=VARCHAR}
+                    ) t2
+            ) t3
+        left join st_workflow_task t4 on t3.task_id = t4.id
+        left join st_case_entrust t5 on t4.business_key = t5.id
+        WHERE
+	        ISNULL(t4.assignee) or t4.assignee=''
+    </select>
+
+
+    <select id="listTodoTaskByUserId" parameterType="java.util.Map" resultMap="CaseEntrustTaskResultMap">
+         select
+            sce.id as case_entrust_id,
+            sce.test01,
+            swt.id as task_id,
+            swt.name,
+            swt.assignee,
+            swt.create_time,
+            swt.due_date
+        from st_workflow_task swt
+        left join st_case_entrust sce on swt.business_key = sce.id
+        WHERE
+            ISNULL(swt.end_date) and
+            swt.assignee = #{userId,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="listTodoTaskExcludeOvertimeTaskByUserId" parameterType="java.util.Map" resultMap="CaseEntrustTaskResultMap">
+        select
+            sce.id as case_entrust_id,
+            sce.test01,
+            swt.id as task_id,
+            swt.name,
+            swt.assignee,
+            swt.create_time,
+            swt.due_date
+        from st_workflow_task swt
+        left join st_case_entrust sce on swt.business_key = sce.id
+        WHERE
+            ISNULL(swt.end_date) and
+            (swt.due_date > now() or ISNULL(swt.due_date)) and
+            swt.assignee = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="listOvertimeTaskByUserId" parameterType="java.util.Map" resultMap="CaseEntrustTaskResultMap">
+        select
+            sce.id as case_entrust_id,
+            sce.test01,
+            swt.id as task_id,
+            swt.name,
+            swt.assignee,
+            swt.create_time,
+            swt.due_date
+        from st_workflow_task swt
+        left join st_case_entrust sce on swt.business_key = sce.id
+        WHERE
+            ISNULL(swt.end_date) and
+            swt.due_date &lt;= now() and
+            swt.assignee = #{userId,jdbcType=VARCHAR}
+    </select>
+
+
+
+
+    <!-- 任务图列表 -->
+    <resultMap id="ImageTaskResultMap" type="com.ws.shavuot.dto.cases.ImageTaskDto">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getCurrentImageTask" parameterType="java.lang.Long" resultMap="ImageTaskResultMap">
+        select name from st_workflow_task
+        WHERE
+            business_key = #{businessKey,jdbcType=BIGINT} and
+            !ISNULL(process_instance_id) and
+            ISNULL(end_date)
+    </select>
+
+
+
+</mapper>

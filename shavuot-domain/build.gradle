@@ -1,0 +1,35 @@
+group 'com.wusong'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+jar {
+    baseName = 'shavuot-domain'
+    version = '1.0'
+}
+
+repositories {
+    mavenLocal()
+    //maven { url "http://nexus.wusong.com:8081/nexus/content/groups/public/" }
+    //maven { url 'http://nexus.tiantong.com/nexus/content/groups/public' }
+    //maven { url 'http://repo.spring.io/libs-release' }
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+dependencies {
+     // 使用@Data注解
+    compile("org.projectlombok:lombok:1.16.14")
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'

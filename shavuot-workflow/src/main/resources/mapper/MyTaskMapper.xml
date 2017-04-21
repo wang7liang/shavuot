@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ws.shavuot.dao.MyTaskMapper">
+    <resultMap id="BaseResultMap" type="com.ws.shavuot.domain.MyTask">
+        <id column="ID_" property="id" jdbcType="VARCHAR"/>
+        <result column="EXECUTION_ID_" property="executionId" jdbcType="VARCHAR"/>
+        <result column="PROC_INST_ID_" property="processInstanceId" jdbcType="VARCHAR"/>
+        <result column="PROC_DEF_ID_" property="processDefinitionId" jdbcType="VARCHAR"/>
+        <result column="NAME_" property="name" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION_" property="description" jdbcType="VARCHAR"/>
+        <result column="TASK_DEF_KEY_" property="taskDefinitionKey" jdbcType="VARCHAR"/>
+        <result column="OWNER_" property="owner" jdbcType="VARCHAR"/>
+        <result column="ASSIGNEE_" property="assignee" jdbcType="VARCHAR"/>
+        <result column="PRIORITY_" property="priority" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME_" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="DUE_DATE_" property="dueDate" jdbcType="TIMESTAMP"/>
+        <result column="CATEGORY_" property="category" jdbcType="VARCHAR"/>
+        <result column="PARENT_TASK_ID_" property="parentTaskId" jdbcType="VARCHAR"/>
+        <result column="TENANT_ID_" property="tenantId" jdbcType="VARCHAR"/>
+        <result column="FORM_KEY_" property="formKey" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_KEY_" property="businessKey" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="listRuntimeTaskByProcessInstanceId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+            art.ID_,
+            art.EXECUTION_ID_,
+            art.PROC_INST_ID_,
+            art.PROC_DEF_ID_,
+            art.NAME_,
+            art.DESCRIPTION_,
+            art.TASK_DEF_KEY_,
+            art.OWNER_,
+            art.ASSIGNEE_,
+            art.PRIORITY_,
+            art.CREATE_TIME_,
+            art.DUE_DATE_,
+            art.CATEGORY_,
+            art.PARENT_TASK_ID_,
+            art.TENANT_ID_,
+            art.FORM_KEY_,
+            are.BUSINESS_KEY_
+        from
+            (
+            select * from ACT_RU_TASK
+            where
+                PROC_INST_ID_ = #{processInstanceId,jdbcType=VARCHAR}
+            ) art
+        left join ACT_RU_EXECUTION are on art.EXECUTION_ID_ = are.ID_
+    </select>
+
+
+    <select id="listRuntimeTaskByExecutionId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+            art.ID_,
+            art.EXECUTION_ID_,
+            art.PROC_INST_ID_,
+            art.PROC_DEF_ID_,
+            art.NAME_,
+            art.DESCRIPTION_,
+            art.TASK_DEF_KEY_,
+            art.OWNER_,
+            art.ASSIGNEE_,
+            art.PRIORITY_,
+            art.CREATE_TIME_,
+            art.DUE_DATE_,
+            art.CATEGORY_,
+            art.PARENT_TASK_ID_,
+            art.TENANT_ID_,
+            art.FORM_KEY_,
+            are.BUSINESS_KEY_
+        from
+        (
+            select * from ACT_RU_TASK
+            WHERE
+                EXECUTION_ID_ = #{executionId,jdbcType=VARCHAR}
+        ) art
+        left join ACT_RU_EXECUTION are on art.EXECUTION_ID_ = are.ID_
+    </select>
+
+
+</mapper>

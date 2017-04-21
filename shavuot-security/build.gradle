@@ -1,0 +1,73 @@
+group 'com.wusong'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'shavuot-security'
+    version = '1.0'
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+ext {
+    springFrameworkVersion = '4.2.5.RELEASE'
+}
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE'
+        classpath 'org.springframework:springloaded:1.2.5.RELEASE'
+    }
+}
+
+dependencies {
+    compile project(":shavuot-toolset")
+    compile project(":shavuot-dao")
+
+
+    compile(
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE',
+            "org.springframework:spring-core:${springFrameworkVersion}",
+            "org.springframework:spring-beans:${springFrameworkVersion}",
+            "org.springframework:spring-context:${springFrameworkVersion}",
+            "org.springframework:spring-aop:${springFrameworkVersion}",
+            "org.springframework:spring-tx:${springFrameworkVersion}"
+    )
+
+    // 使用springSecurity
+    compile(
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-security:1.5.2.RELEASE'
+    )
+
+    // 使用jwt
+    compile('io.jsonwebtoken:jjwt:0.6.0')
+
+    // 使用@Data注解
+    compile("org.projectlombok:lombok:1.16.14")
+
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'

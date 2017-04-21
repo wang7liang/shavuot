@@ -1,0 +1,20 @@
+server:
+    port: 9009
+    context-path:
+
+
+spring:
+    profiles.active: local
+
+---
+spring:
+    profiles: local
+
+    datasource:
+        name: shavuot
+        url: jdbc:mysql://127.0.0.1:3306/shavuot?characterEncoding=UTF-8
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+
+
