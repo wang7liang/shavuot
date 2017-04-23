@@ -61,6 +61,11 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.9'
     )
 
+    // 使用kafka
+    compile(
+            "org.springframework.kafka:spring-kafka:1.0.2.RELEASE"
+    )
+
     // 使用@Data注解
     compile("org.projectlombok:lombok:1.16.14")
 

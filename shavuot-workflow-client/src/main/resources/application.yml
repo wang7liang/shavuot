@@ -18,3 +18,5 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
 
 
+mq:
+  url: http://127.0.0.1:9003/mqReceiver

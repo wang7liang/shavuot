@@ -7,7 +7,9 @@ import com.ws.shavuot.service.mq.MqService;
 import com.ws.shavuot.service.workflow.WorkflowXxxService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -25,19 +27,33 @@ public class WorkflowXxxServiceImpl implements WorkflowXxxService {
     @Resource
     private MqService mqService;
 
-    @TsCheck
     @Transactional
     @Override
-    public void startProcess(String key, Long businessKey, String userId, Map<String, String> variables) {
-        // 设置入参
+    public void startProcess(String key, Long businessKey, String userId, Map<String, String> variables) throws Exception {
+        System.out.println("name02"+ TransactionSynchronizationManager.getCurrentTransactionName());
+
+        // 调用服务1
         StartProcessDto startProcessDto = new StartProcessDto();
         startProcessDto.setKey("caseEntrustProcess");
         startProcessDto.setBusinessKey(String.valueOf(businessKey));
         startProcessDto.setUserId(userId);
         startProcessDto.setVariables(variables);
-
         mqService.saveLocal(TopicConstant.WF_START_TOPIC, startProcessDto);
 
-        mqService.sendMessage();
+        // 调用服务2
+        startProcessDto = new StartProcessDto();
+        startProcessDto.setKey("xxx");
+        startProcessDto.setBusinessKey(String.valueOf(businessKey));
+        startProcessDto.setUserId(userId);
+        startProcessDto.setVariables(variables);
+        mqService.saveLocal(TopicConstant.WF_START_TOPIC, startProcessDto);
+
+        // 调用服务3
+        startProcessDto = new StartProcessDto();
+        startProcessDto.setKey("yyy");
+        startProcessDto.setBusinessKey(String.valueOf(businessKey));
+        startProcessDto.setUserId(userId);
+        startProcessDto.setVariables(variables);
+        mqService.saveLocal(TopicConstant.WF_START_TOPIC, startProcessDto);
     }
 }

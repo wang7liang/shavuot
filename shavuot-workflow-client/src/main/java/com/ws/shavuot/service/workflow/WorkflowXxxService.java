@@ -19,6 +19,6 @@ public interface WorkflowXxxService {
      * @param variables   流程变量
 
      */
-    void startProcess(String key, Long businessKey, String userId, Map<String, String> variables);
+    void startProcess(String key, Long businessKey, String userId, Map<String, String> variables) throws Exception;
 
 }

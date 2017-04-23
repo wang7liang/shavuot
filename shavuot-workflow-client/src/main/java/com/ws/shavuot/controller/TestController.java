@@ -1,6 +1,7 @@
 package com.ws.shavuot.controller;
 
 import com.ws.shavuot.service.workflow.WorkflowXxxService;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,13 +31,18 @@ public class TestController {
      */
     @RequestMapping("/test01")
     public String test01(HttpServletRequest request) {
+        System.out.println("name01"+TransactionSynchronizationManager.getCurrentTransactionName());
         String result = "success";
         hello("wang7liang");
         Map<String, String> map = new HashMap<>();
         map.put("t1", "t1");
         map.put("t2", "t2");
         long id = 11;
-        workflowXxxService.startProcess("aa", id, "wang", map);
+        try {
+            workflowXxxService.startProcess("aa", id, "wang", map);
+        } catch (Exception e) {
+            result = e.getLocalizedMessage();
+        }
 
         return result;
     }

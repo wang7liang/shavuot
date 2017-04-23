@@ -1,12 +1,14 @@
 package com.ws.shavuot.domain.mysql;
 
 import lombok.Data;
+
 import java.util.Date;
+
 /**
 * 本地事件.
 */
 @Data
-public class EventLocalInfo {
+public class EventRemoteInfo {
 
     /**
      * 
@@ -27,21 +29,6 @@ public class EventLocalInfo {
      * 
      */
     private String status;
-
-    /**
-     *
-     */
-    private int retries;
-
-    /**
-     *
-     */
-    private String exceptionMsg;
-
-    /**
-     *
-     */
-    private int version;
 
     /**
      * 

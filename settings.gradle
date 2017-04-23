@@ -13,4 +13,6 @@ include 'shavuot-security'
 include 'shavuot-kafka'
 include 'shavuot-follow'
 include 'shavuot-workflow-client'
+include 'shavuot-dts-consumer'
+include 'shavuot-dts-producer'
 

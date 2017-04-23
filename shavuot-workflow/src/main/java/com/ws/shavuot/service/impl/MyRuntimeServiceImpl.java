@@ -33,7 +33,7 @@ public class MyRuntimeServiceImpl implements MyRuntimeService {
 
     @Override
     public void startProcessByKeyAndBusinessKey(String key, String businessKey, Map<String, Object> variables) {
-
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, businessKey, variables);
     }
 }
 

@@ -1,21 +1,24 @@
 package com.ws.shavuot.service.mq;
 
+import com.ws.shavuot.dto.mq.MqDto;
+
 /**
  * Created by wangqiliang on 17/4/21.
  */
 public interface MqService {
+
     /**
      * @param topic   String
      * @param message String
      * @return boolean
      */
-    void saveLocal(String topic, String message) throws Exception;
+    void saveRemote(String topic, String message) throws Exception;
+
 
     /**
-     * @param topic String
-     * @param obj   Object
-     * @return boolean
+     *
+     * @param mqDto
+     * @throws Exception
      */
-    void saveLocal(String topic, Object obj) throws Exception;
-
+    void saveRemote(MqDto mqDto) throws Exception;
 }
